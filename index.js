@@ -12,13 +12,12 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 client.messages
-    .create({
-        body: "Hi EcoWarrior 🌍!\nHow can I help you in waste segregation 🗑?\nUpload an image or mannually type the name of the item you want to dispose. ",
-        from: `whatsapp:${process.env.SANDBOX_NO}`,
+  .create({
+    body: "Hi EcoWarrior 🌍!\nHow can I help you in waste segregation 🗑?\nUpload an image or mannually type the name of the item you want to dispose. ",
+    from: `whatsapp:${process.env.SANDBOX_NO}`,
         to: `whatsapp:${process.env.PHONE_NO}`,
     })
     .then((message) => console.log(message.sid));
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -56,7 +55,6 @@ const typeOfWaste = async (text) => {
         return 3;
 }
 const getSendMessage = (input) => {
-    console.log(input);
      if (input === 0) {
        return "Non-Recyclable. Try refurbishing it 🧐";
      } else if (input === 1) {
@@ -72,7 +70,6 @@ app.post("/whatsapp", async (req, res) => {
   const message = req.body.Body;
   const mediaUrl = req.body.MediaUrl0;
     if (message === "" && mediaUrl !== undefined) {
-        console.log(mediaUrl);
         const prediction = await makePredcition(mediaUrl);
         twiml.message(getSendMessage(prediction));
   } else {
@@ -83,6 +80,6 @@ app.post("/whatsapp", async (req, res) => {
   res.send(twiml.toString());
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Express server listening on port 3000");
 });
